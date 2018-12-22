@@ -34,7 +34,7 @@ class SyntaxTree {
 
             //Read statement handling 2 children (value, what to read)
             else if (child instanceof TLParser.Read_stmtContext)
-                syntaxChild = new SyntaxTreeNode("read " + child.getChild(1).toString());
+                syntaxChild = new SyntaxTreeNode("read=>" + child.getChild(1).toString());
 
             else if (child instanceof TLParser.EqExpressionContext) {
                 syntaxChild = parseOperation(child);
@@ -67,8 +67,8 @@ class SyntaxTree {
             }
             //Write statement handling
             else if (child instanceof TLParser.Write_stmtContext) {
-                syntaxChild = new SyntaxTreeNode("write ");//2 children (value,stmt)
-                preOrderTraverse(child.getChild(1), syntaxChild);
+                syntaxChild = new SyntaxTreeNode("write");//2 children (value,stmt)
+                preOrderTraverse(child, syntaxChild);
             }
             //If statement handling
             else if (child instanceof TLParser.IfStatementContext) {
@@ -113,7 +113,7 @@ class SyntaxTree {
     }
 
     private SyntaxTreeNode parseOperation(ParseTree child) {
-        SyntaxTreeNode syntaxChild = new SyntaxTreeNode("op\n" + child.getChild(1).getText());
+        SyntaxTreeNode syntaxChild = new SyntaxTreeNode("op(" + child.getChild(1).getText() + ")");
         preOrderTraverse(child, syntaxChild);
         return syntaxChild;
     }

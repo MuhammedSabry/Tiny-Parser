@@ -8,5 +8,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="antlr-4.7.2-complete" level="project" />
+    <orderEntry type="library" name="guru.nidi:graphviz-java:0.8.0" level="project" />
+    <orderEntry type="library" name="ch.qos.logback:logback-classic:1.2.3" level="project" />
+    <orderEntry type="library" name="com.eclipsesource.j2v8:j2v8_win32_x86_64:4.6.0" level="project" />
+    <orderEntry type="library" name="com.eclipsesource.j2v8:j2v8_win32_x86:4.6.0" level="project" />
   </component>
 </module>
