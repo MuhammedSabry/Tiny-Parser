@@ -16,7 +16,6 @@ public class SyntaxTreeNode {
 
     private void setParent(SyntaxTreeNode parent) {
         this.parent = parent;
-        parent.children.add(this);
     }
 
     public String getData() {
@@ -34,5 +33,10 @@ public class SyntaxTreeNode {
 
     List<SyntaxTreeNode> getChildren() {
         return this.children;
+    }
+
+    @Override
+    public String toString() {
+        return data;
     }
 }

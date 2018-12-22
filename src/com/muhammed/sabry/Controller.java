@@ -56,7 +56,6 @@ public class Controller implements Initializable {
             ParseTree tree = parser.parse();
             SyntaxTree root = new SyntaxTree("Start");
             root.preOrderTraverse(tree, root.getRoot());
-            return;
         } catch (Exception e) {
             if (e.getMessage() != null) {
                 System.err.println(e.getMessage());
