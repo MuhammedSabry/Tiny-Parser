@@ -33,7 +33,7 @@ class SyntaxTree {
                 syntaxChild = parseOperation(child, "op\n=");
                 isOperation = true;
             } else if (child instanceof TLParser.CompExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n=");
+                syntaxChild = parseOperation(child, "op\n" + child.getChild(1).getText());
                 isOperation = true;
             } else if (child instanceof TLParser.AndExpressionContext) {
                 syntaxChild = parseOperation(child, "op\n&&");
