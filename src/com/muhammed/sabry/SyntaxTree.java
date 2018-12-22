@@ -22,30 +22,37 @@ class SyntaxTree {
             ParseTree child = parseTree.getChild(i);
             SyntaxTreeNode syntaxChild = null;
             boolean isOperation = false;
-            if (parseTree instanceof TLParser.NumberExpressionContext)
-                syntaxChild = new SyntaxTreeNode(parseTree.getText());
 
-                //Read statement handling 2 children (value, what to read)
+            if (parseTree instanceof TLParser.NumberExpressionContext) {
+
+                syntaxChild = new SyntaxTreeNode(parseTree.getText());
+                i += 100;
+            } else if (parseTree instanceof TLParser.IdentifierExpressionContext) {
+                syntaxChild = new SyntaxTreeNode(parseTree.getText());
+                i += 100;
+            }
+
+            //Read statement handling 2 children (value, what to read)
             else if (child instanceof TLParser.Read_stmtContext)
                 syntaxChild = new SyntaxTreeNode("read " + child.getChild(1).toString());
 
             else if (child instanceof TLParser.EqExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n=");
+                syntaxChild = parseOperation(child);
                 isOperation = true;
             } else if (child instanceof TLParser.CompExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n" + child.getChild(1).getText());
+                syntaxChild = parseOperation(child);
                 isOperation = true;
             } else if (child instanceof TLParser.AndExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n&&");
+                syntaxChild = parseOperation(child);
                 isOperation = true;
             } else if (child instanceof TLParser.OrExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n||");
+                syntaxChild = parseOperation(child);
                 isOperation = true;
             } else if (child instanceof TLParser.AddExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n+");
+                syntaxChild = parseOperation(child);
                 isOperation = true;
             } else if (child instanceof TLParser.MultExpressionContext) {
-                syntaxChild = parseOperation(child, "op\n*");
+                syntaxChild = parseOperation(child);
                 isOperation = true;
             }
 
@@ -84,32 +91,30 @@ class SyntaxTree {
             //Repeat Statement handling
             else if (child instanceof TLParser.Repeat_stmtContext) {
                 syntaxChild = new SyntaxTreeNode("repeat");//4 children (repeat,stmts,until,condition)
-                preOrderTraverse(child.getChild(1), syntaxChild);
-                preOrderTraverse(child.getChild(3), syntaxChild);
+                preOrderTraverse(child, syntaxChild);
             }
 
-            //Assignment statement handling
+            //Assignment statement handling 3 children (var, value,stmt)
             else if (child instanceof TLParser.AssignmentContext) {
-                syntaxChild = new SyntaxTreeNode("assign\n" + child.getChild(0).toString());//3 children (var, value,stmt)
-                preOrderTraverse(child.getChild(2), syntaxChild);
+                syntaxChild = new SyntaxTreeNode("assign\n" + child.getChild(0).toString());
+                ((TLParser.AssignmentContext) child).children.remove(0);
+                preOrderTraverse(child, syntaxChild);
             }
 
             //Else we will just traverse the children
             else
                 preOrderTraverse(child, rootNode);
-
             if (syntaxChild != null) {
-                rootNode.addChild(syntaxChild);
                 if (isOperation && rootNode.getData().equals("if"))
                     break;
+                rootNode.addChild(syntaxChild);
             }
         }
     }
 
-    private SyntaxTreeNode parseOperation(ParseTree child, String s) {
-        SyntaxTreeNode syntaxChild = new SyntaxTreeNode(s);
-        preOrderTraverse(child.getChild(0), syntaxChild);
-        preOrderTraverse(child.getChild(2), syntaxChild);
+    private SyntaxTreeNode parseOperation(ParseTree child) {
+        SyntaxTreeNode syntaxChild = new SyntaxTreeNode("op\n" + child.getChild(1).getText());
+        preOrderTraverse(child, syntaxChild);
         return syntaxChild;
     }
 
