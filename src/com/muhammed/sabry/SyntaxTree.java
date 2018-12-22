@@ -57,9 +57,8 @@ class SyntaxTree {
                 preOrderTraverse(child, rootNode);
             }
 
-            if (syntaxChild != null) {
+            if (syntaxChild != null)
                 rootNode.addChild(syntaxChild);
-            }
         }
     }
 
